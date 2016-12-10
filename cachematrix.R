@@ -3,13 +3,33 @@
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(s = matrix()) {
+  n <- NULL
+  seti <- function(q){
+    s <<- q
+    n <<- NULL
+  }
+  geti <- function()s
+  setinvers <- function(solve) n <<- solve
+  getinvers <- function () n
+  list(seti = seti, geti = geti, 
+       setinvers = setinvers, 
+       getinvers = getinvers)
+  
 }
 
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(s, ...) {
         ## Return a matrix that is the inverse of 'x'
+  n <- s$getinvers()
+  if(!is.null(n)){
+    message("getting cached data")
+    return(n)
+  }
+  datam <- s$geti()
+  n <- solve(datam, ...)
+  s$setinvers(n)
+  n
 }
